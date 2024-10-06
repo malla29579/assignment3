@@ -1,0 +1,17 @@
+import re
+
+def parse_stats(file_path):
+    data = {}
+    with open(file_path, 'r') as file:
+        for line in file:
+            if re.search('system.cpu.dcache.overall_miss_rate::total', line):
+                data['dcache_miss_rate'] = float(line.split()[1])
+            elif re.search('system.cpu.icache.overall_miss_rate::total', line):
+                data['icache_miss_rate'] = float(line.split()[1])
+    return data
+
+# Example usage
+stats_data = parse_stats('path/to/your/stats.txt')
+with open('output_data.csv', 'w') as f:
+    for key, value in stats_data.items():
+        f.write(f"{key},{value}\n")
